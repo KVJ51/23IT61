@@ -19,15 +19,17 @@ export function NotificationsPage() {
   const [filter, setFilter] = useState();
   const [page, setPage] = useState("1");
 
-  const { notifications, totalPages, loading, error } = useNotifications();
+  const { notifications, totalPages, loading, error } = useNotifications(page,filter);
 
   const unreadCount = 2;
 
   const handleFilterChange = (newFilter) => {
-
+    setFilter(newFilter),
+    setPage(1);
   };
 
   const handlePageChange = (_, newPage) => {
+    setPage(newPage);
 
   };
 
@@ -58,7 +60,7 @@ export function NotificationsPage() {
         <Alert severity="error">Failed to load notifications: {error}</Alert>
       )}
 
-      {loading && !error && notifications.length == "0" && (
+      {loading && !error && notifications.length == 0 && (
         <Alert severity="info">Something message</Alert>
       )}
 
@@ -70,7 +72,7 @@ export function NotificationsPage() {
         </Stack>
       )}
 
-      {!loading && (
+      {!loading && totalPages > 1 && (
         <Box display="flex" justifyContent="center" mt={4}>
           <Pagination
             count={totalPages}
